@@ -28,42 +28,47 @@
       <Category :table="selectedTable" @changeCategory="changeCategory"></Category>
     </el-col>
     <el-col :span="20" class="product_list">
-      <el-table
-          ref="multipleTableRef"
-          :data="products"
-          stripe
-          style="width: 100%"
-          @selection-change="handleSelectionChange"
-      >
-        <el-table-column type="selection" label="id" width="55"/>
-        <el-table-column property="spu" label="spu" width="120"/>
-        <el-table-column label="Name" width="400">
-          <template #default="scope">
-            <el-link :href="scope.row.site_url" :disabled="!scope.row.site_url">{{
-                scope.row.name
-              }}
-            </el-link>
-          </template>
-        </el-table-column>
-        <el-table-column label="主图">
-          <template #default="scope">
-            <el-image class="main_picture" :src="getMainPicture(scope.row.pictures)" loading="lazy"/>
-          </template>
-        </el-table-column>
-        <el-table-column label="价格(现价/原价)" width="200">
-          <template #default="scope">
-            <el-tag>{{ scope.row.d_price }}</el-tag>
-            /
-            <el-tag type="danger">{{ scope.row.price }}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="尺码" width="400">
-          <template #default="scope">
-            <el-input v-model="scope.row.size" placeholder="请输入尺码"/>
-          </template>
-        </el-table-column>
+      <el-row class="table_product_head">
+        <el-col :span="2">
+          spu
+        </el-col>
+        <el-col :span="4">
+          Name
+        </el-col>
+        <el-col :span="4">
+          主图
+        </el-col>
+        <el-col :span="4">
+          价格(现价/原价)
+        </el-col>
+        <el-col :span="4">
+          尺码
+        </el-col>
+      </el-row>
+      <el-checkbox-group v-model="selectedProductIds">
+        <el-row v-for="product in products" class="table_product_body">
+          <el-col :span="2">
+            <el-checkbox :label="product.id"/>
+          </el-col>
+          <el-col :span="5">
 
-      </el-table>
+          </el-col>
+          <el-col :span="4">
+            <el-image class="main_picture" :src="getMainPicture(product.pictures)" loading="lazy"/>
+          </el-col>
+          <el-col :span="4">
+            <el-tag>{{ product.d_price }}</el-tag>
+            --
+            <el-tag type="danger">{{ product.price }}</el-tag>
+          </el-col>
+          <el-col :span="6">
+            <el-input v-model="product.size" placeholder="请输入尺码"/>
+          </el-col>
+          <el-col :span="3">
+            <el-link :href="product.site_url" :disabled="!product.site_url">查看原链接</el-link>
+          </el-col>
+        </el-row>
+      </el-checkbox-group>
     </el-col>
   </el-row>
 
@@ -82,6 +87,7 @@ export default {
   setup() {
     const selectedTable = ref("")
     const selectedProducts = ref([])
+    const selectedProductIds = ref([])
     const sizeTemplate = ref("")
     const categoryTemplate = ref("")
     const currentFullCategory = ref("")
@@ -171,6 +177,7 @@ export default {
       tables,
       selectedProducts,
       products,
+      selectedProductIds,
       changeCategory,
       handleSelectionChange,
       getMainPicture,
@@ -196,8 +203,8 @@ export default {
 }
 
 .main_picture {
-  height: 150px;
-  width: 150px;
+  height: 100px;
+  width: 100px;
 }
 
 .top_input {
@@ -207,4 +214,15 @@ export default {
 .top_button {
   margin-left: 5px;
 }
+
+.table_product_head {
+  margin-bottom: 5px;
+  text-align: center
+}
+
+.table_product_body {
+  text-align: center;
+  border-top-style: dotted;
+}
 </style>
+
