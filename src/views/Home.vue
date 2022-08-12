@@ -1,15 +1,18 @@
 <template>
-  <div class="about">
-    <Header>
-    </Header>
-    <div class="content-box">
-
-      <div class="content">
+  <div class="common-layout">
+    <el-container>
+      <el-header>
+        <Header>
+        </Header>
+      </el-header>
+      <el-main>
         <router-view>
         </router-view>
-      </div>
-    </div>
+      </el-main>
+    </el-container>
   </div>
+
+
 </template>
 <script>
 
